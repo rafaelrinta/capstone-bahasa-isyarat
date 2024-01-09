@@ -1,7 +1,4 @@
-# America-Sign-Language-App-with-Flask
-
-**Hi guys! I'm Sho0**
-**This repository is a project for my university course**
+# Deteksi Bahasa Isyarat Menggunakan Flask
 
 ## Summary:
 **Project have 2 part:**

@@ -1,0 +1,16 @@
+,id_hasil_model,id_review,nama,tanggal,review,label
+0,13,13,User1,2023-12-04,Aplikasi ini sangat membantu dan mudah digunakan.,1
+1,14,14,User2,2023-12-04,Website ini memberikan pengalaman yang luar biasa.,1
+2,15,15,User3,2023-12-04,Saya sangat puas dengan fitur-fitur yang disediakan.,1
+3,16,16,User4,2023-12-04,Layanan pelanggan yang ramah dan responsif.,1
+4,17,17,User5,2023-12-04,Aplikasi ini membuat hidup saya lebih mudah dan efisien.,1
+5,18,18,User6,2023-12-04,"Banyak bug pada aplikasi, membuat pengalaman buruk.",0
+6,19,19,User7,2023-12-04,Navigasi website sangat membingungkan dan lambat.,0
+7,20,20,User8,2023-12-04,Fitur-fitur yang ditawarkan kurang memuaskan.,0
+8,21,21,User9,2023-12-04,Aplikasi sering crash dan tidak stabil.,0
+9,22,22,User10,2023-12-04,Pelayanan pelanggan sangat buruk dan tidak responsif.,0
+10,23,23,User11,2023-12-04,Saya merasa biasa saja dengan aplikasi ini.,-1
+11,24,24,User12,2023-12-04,Website ini memiliki kelebihan dan kekurangan masing-masing.,-1
+12,25,25,User13,2023-12-04,Tidak terlalu terkesan dengan fitur-fitur yang disediakan.,-1
+13,26,26,User14,2023-12-04,Penggunaan aplikasi ini standar saja.,-1
+14,27,27,User15,2023-12-04,Tidak ada yang istimewa dari website ini.,-1

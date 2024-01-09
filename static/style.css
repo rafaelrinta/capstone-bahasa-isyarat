@@ -1,0 +1,195 @@
+* {
+    color: #11172D;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+/* Style the background color for the entire body */
+body {
+    background-color: #FCF1E6;
+}
+
+/* Style the header background color 
+div.bg {
+    background-color: #F9D348;
+} 
+*/
+
+/* Style the navigation links */
+nav a {
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: 500;
+}
+
+/* Style the navigation links on hover */
+nav a:hover {
+    background-color: #11172D;
+    color: #FCF1E6;
+}
+
+/* Style the content section */
+.content {
+    margin: 20px;
+    padding: 20px;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+  
+  /* Style the navigation button on hover */
+  .btn:hover {
+    background-color: #F9D348;
+    color: #FCF1E6;
+  }
+
+  /* Style for h1 */
+h1,h2 {
+    font-size: 36px;
+    font-weight: bold;
+    color: #11172D;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  /* Style for p */
+  p {
+    font-size: 16px;
+    line-height: 1.6; /* Adjust the line height for readability */
+    color: #333; /* A slightly lighter color than the background */
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  /* Style for the banner section */
+.banner {
+    text-align: center;
+  }
+  
+  /* Style for the banner image */
+  .banner img {
+    width: 100%;
+    max-height: 300px; /* Adjust the height as needed */
+    object-fit: cover; /* Maintain image aspect ratio */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+  }
+
+  .btn-container {
+    display: flex;
+    justify-content: center;
+  }
+  
+  /* Style for the links */
+.btn-container a {
+  display: block;
+  background-color: #11172D;
+  color: #FCF1E6;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  margin: 10px;
+  transition: background-color 0.3s;
+  display: flex;
+  justify-content: center;
+}
+
+/* Style for the links on hover */
+.btn-container a:hover {
+  background-color: #F9D348;
+  color: #FCF1E6;
+}
+
+/* chatbot
+/* Style the container for chat */
+.row {
+  margin: 20px auto;
+  max-width: 800px;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Style the chatbox */
+#chatbox {
+  margin: 20px 0;
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  min-height: 150px;
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: #f9f9f9;
+}
+
+/* Style chat text */
+.botText, .userText {
+  padding: 10px;
+  margin: 5px;
+  border-radius: 5px;
+}
+
+.botText {
+  background-color: #F9D348;
+  text-align: left;
+}
+
+.userText {
+  background-color: #FCF1E6;
+  text-align: right;
+}
+
+/* Style the input field and send button */
+#userInput {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+#text {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+}
+
+#send {
+  margin-left: 10px;
+  background-color: #F9D348;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+#send:hover {
+  background-color: #11172D;
+}
+
+.container-form {
+  max-width: 600px;
+  margin: auto;
+  margin-top: 20px;
+}
+
+.content-container {
+  display: none;
+}
+
+#content-input-review, #content-visualisasi {
+  display: block;
+}
+
+iframe {
+  width: 100%;
+  height: 100vh;
+  border: none;
+}

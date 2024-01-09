@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Input Ulasan</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="/static/style.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+</head>
+<body class="bg-[#FCF1E6]">
+    <form id="reviewForm" method="post">
+        <div class="bg-[#F9D348] h-10"></div>
+        <nav>
+            <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-10">
+                <div class="relative flex items-center justify-between h-20">
+                    <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
+                        <div class="flex-shrink-0 flex items-center">
+                            <img class="block lg:hidden h-12 w-auto" src="./static/logogerakin.png" alt="ASL" />
+                            <img class="hidden lg:block h-12 w-auto" src="./static/logogerakin.png" alt="ASL" />
+                        </div>
+                        <div class="hidden sm:block sm:ml-6 py-8">
+                            <div class="flex space-x-6">
+                            <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+                            <a href="{{ url_for('index') }}"
+                            class="text-black-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium"
+                            aria-current="page">Beranda</a>
+
+                            <a href="{{ url_for('deteksi') }}"
+                            class="text-black-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium"
+                            >Deteksi</a>
+
+                            <a href="{{ url_for('ulasan') }}"
+                            class="text-black-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-bold"
+                            >Ulasan</a>
+
+                            <a href="{{ url_for('sentimen') }}"
+                            class="text-black-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium">Sentimen</a>
+
+                            <a href="{{ url_for('chatbot') }}"
+                            class="text-black-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium">Chatbot</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    
+        <div class="container container-form content-container" id="content-input-review">
+            <!-- Input Review Form -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="nama" class="form-label">Nama</label>
+                        <input type="text" class="form-control" id="nama" name="nama" placeholder="Masukkan Nama Anda" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="tanggal" class="form-label">Tanggal</label>
+                        <input type="date" class="form-control" id="tanggal" name="tanggal" required>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="mb-3">
+                <label for="review" class="form-label">Ulasan</label>
+                <textarea class="form-control" id="review" name="review" rows="3" placeholder="Masukkan Ulasan Anda" required></textarea>
+            </div>
+    
+            <div class="mb-3">
+                <button type="button" class="btn btn-primary" onclick="submitForm()" style="background-color: #F9D348; color: #11172D;">Kirim</button>
+            </div>            
+        </div>
+    
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+        <script>
+
+            function submitForm() {
+                // Get form data
+                var formData = {
+                    'nama': document.getElementById('nama').value,
+                    'tanggal': document.getElementById('tanggal').value,
+                    'review': document.getElementById('review').value
+                };
+
+                // Send AJAX request to submit form
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/submit', true);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        // Form submitted successfully
+                        alert("Form submitted successfully!");
+                    }
+                };
+                xhr.send(JSON.stringify(formData));
+            }
+        </script>
+    </form>
+    
+</body>
+</html>

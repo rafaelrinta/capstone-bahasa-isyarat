@@ -1,0 +1,45 @@
+{
+    "intents": [{
+            "tag": "sapaan",
+            "patterns": ["halo", "wassup", "hai", "hey", "hello"],
+            "responses": ["Halo juga", "Senang bertemu dengan anda, Ada yang bisa saya bantu?"],
+            "context": [""]
+        },
+        {
+            "tag": "penutup",
+            "patterns": ["Selamat tinggal", "Good bye", "Sampai jumpa lagi"],
+            "responses": ["Selamat bersenang-senang, selamat datang kembali", "bye bye"],
+            "context": [""]
+        },
+        {
+            "tag": "terimakasih",
+            "patterns": ["Terimakasih", "Oke","Thank you","thankyou", "Sangat membantu", "Terimakasih atas bantuannya", "wow", "Bagus"],
+            "responses": ["Senang membantu anda!","Sama-sama"],
+            "context": [""]
+        },
+        {
+            "tag": "tidakada",
+            "patterns": [""],
+            "responses": ["Maaf, saya tidak memahami Anda", "Tolong beri saya info lebih lanjut", "Saya tidak yakin saya memahaminya"],
+            "context": [""]
+        },
+        {
+            "tag": "penggunaan",
+            "patterns": ["bagaimana saya bisa menggunakan aplikasi ini?","Jelaskan penggunaan aplikasi ini?"],
+            "responses": ["Anda bisa ke menu Deteksi, Lalu gerakan tangan anda ke kamera","Gerakan tangan anda ke kamera pada menu deteksi"],
+            "context": [""]
+        },
+        {
+            "tag": "tujuan",
+            "patterns": ["Aplikasi ini untuk apa?", "Apa tujuan aplikasi ini?"],
+            "responses": ["Aplikasi ini bertujuan untuk membantu para teman tunarungu agar bisa leluasa berkomunikasi dengan orang lain"],
+            "context": [""]
+        },
+        {
+            "tag": "fitur",
+            "patterns": ["Apa saja fitur dari aplikasi ini?", "fitur"],
+            "responses": ["Ada 2 fitur yang bisa anda pakai, Deteksi gerakan bahasa isyarat dan Suara ke teks"],
+            "context": [""]
+        }
+    ]
+}

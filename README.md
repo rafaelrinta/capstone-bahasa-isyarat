@@ -1,16 +1,16 @@
 # Deteksi Bahasa Isyarat Menggunakan Flask
 
-## Summary:
-**Project have 2 part:**
-1. First one is Define and Training model made by my teamade you can follow [here](https://github.com/Harly-1506/American-Sign-languages-datasets-Classification)
-2. Second is my demo it is this repo
+## Ringkasan:
+**Projek dibagi menjadi 2 part:**
+1. Pertama, training dataset untuk mendapatkan file model h5 [disini](https://github.com/Harly-1506/American-Sign-languages-datasets-Classification)
+2. Kedua, deploy ke framework flask yang nantinya akan saya jelaskan pada repository ini
 
-**My demo using Flask for backend and Tailwind for Frontend moreover I use [Mediapipe](https://google.github.io/mediapipe/) for hand recognition**
-**In this repo 👇:**
-1. requirement.txt: That is all techich you need to run my app.
-2. server.py: this is the most important part because it contain code for process and run app
-3. template/ : Folder contain all html code for frontend
-4. The others: Almost is static element for frontend and some result from app.
+**Project ini menggunakan Flask untuk backend dan Tailwind untuk Frontend, lalu menggunakan [Mediapipe](https://google.github.io/mediapipe/) untuk pengenalan tangan**
+**Beberapa isi file singkat dalam repositori ini 👇:**
+1. requirements.txt : diperlukan untuk menjalankan aplikasi ini.
+2. app.py : ini bagian terpenting karena berisi kode untuk proses dan menjalankan aplikasi
+3. template/ : Folder berisi semua kode html untuk frontend
+4. Yang lain : Hampir merupakan elemen statis untuk frontend dan beberapa hasil dari aplikasi.
 
 
 ## How to run 🏃!!:

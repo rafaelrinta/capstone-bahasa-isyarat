@@ -1,51 +1,47 @@
-# America-Sign-Language-App-with-Flask
+# Deteksi Bahasa Isyarat Menggunakan Flask
 
-**Hi guys! I'm Sho0**
-**This repository is a project for my university course**
+## Ringkasan:
+**Projek dibagi menjadi 2 part:**
+1. Pertama, training dataset untuk mendapatkan file model h5 [disini](https://github.com/Harly-1506/American-Sign-languages-datasets-Classification)
+2. Kedua, deploy ke framework flask yang nantinya akan saya jelaskan pada repository ini
 
-## Summary:
-**Project have 2 part:**
-1. First one is Define and Training model made by my teamade you can follow [here](https://github.com/Harly-1506/American-Sign-languages-datasets-Classification)
-2. Second is my demo it is this repo
-
-**My demo using Flask for backend and Tailwind for Frontend moreover I use [Mediapipe](https://google.github.io/mediapipe/) for hand recognition**
-**In this repo 👇:**
-1. requirement.txt: That is all techich you need to run my app.
-2. server.py: this is the most important part because it contain code for process and run app
-3. template/ : Folder contain all html code for frontend
-4. The others: Almost is static element for frontend and some result from app.
+**Project ini menggunakan Flask untuk backend dan Tailwind untuk Frontend, lalu menggunakan [Mediapipe](https://google.github.io/mediapipe/) untuk pengenalan tangan**
+**Beberapa isi file singkat dalam repositori ini 👇:**
+1. requirements.txt : diperlukan untuk menjalankan aplikasi ini.
+2. app.py : ini bagian terpenting karena berisi kode untuk proses dan menjalankan aplikasi
+3. template/ : Folder berisi semua kode html untuk frontend
+4. Yang lain : Hampir merupakan elemen statis untuk frontend dan beberapa hasil dari aplikasi.
 
 
-## How to run 🏃!!:
-* You must to have all src code:
+## Langkah-langkah untuk menjalankan🏃!!:
+* Clone terlebih dahulu atau bisa download lalu ekstrak:
 ```bash
-~ git clone https://github.com/RC-Sho0/ASL-web-demo.git
-~ cd ASL-web-demo
+~ git clone https://github.com/rafaelrinta/capstone-bahasa-isyarat.git
+~ cd capstone-bahasa-isyarat
 ```
-* Setup enviroment:
+* Install enviroment:
 ```bash
 ~ pip install -r requirements.txt
 ```
-* Run server:
+* Run server stremlit:
 ```bash
-~ python install server.py
+~ streamlit run sentimen.py
 ```
-* Open browser and connect this path:
+* Run server Flask:
+```bash
+~ flask run
+```
+* Buka browser dan jalankan url:
 ```bash
 http://127.0.0.1:5000
 ```
 
-## My website look like this 
+## Tampilan Web Ketika Berhasil di jalankan
 ![ui](ui.png)
 
 
-**Wow now u can using my app!!! That cool right?**
+**Sekarang kamu bisa menjalankan project ini, keren bukan?**
 
-**If you like that, please Star my repo 🌟**
+**Jangan lupa 🌟🌟 repositori ini, jika kamu suka dengan project yang saya bagikan**
 
-**And if you want to support let follows my github 🎆**
-
-
-
---------------------------------------------------------------
-***Authorized by Sho0***
+**Support dengan cara follow github saya 🎆**

@@ -38,7 +38,7 @@ http://127.0.0.1:5000
 
 ## Tampilan Web Ketika Berhasil di jalankan
 ![ui](images/beranda.png)
-![ui](images/deteksi.png)
+![deteksi](images/deteksi.png)
 
 
 **Sekarang kamu bisa menjalankan project ini, keren bukan?**

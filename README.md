@@ -13,34 +13,38 @@
 4. Yang lain : Hampir merupakan elemen statis untuk frontend dan beberapa hasil dari aplikasi.
 
 
-## How to run 🏃!!:
-* You must to have all src code:
+## Langkah-langkah untuk menjalankan🏃!!:
+* Clone terlebih dahulu atau bisa download lalu ekstrak:
 ```bash
-~ git clone https://github.com/RC-Sho0/ASL-web-demo.git
-~ cd ASL-web-demo
+~ git clone https://github.com/rafaelrinta/capstone-bahasa-isyarat.git
+~ cd capstone-bahasa-isyarat
 ```
-* Setup enviroment:
+* Install enviroment:
 ```bash
 ~ pip install -r requirements.txt
 ```
-* Run server:
+* Run server stremlit:
 ```bash
-~ python install server.py
+~ streamlit run sentimen.py
 ```
-* Open browser and connect this path:
+* Run server Flask:
+```bash
+~ flask run
+```
+* Buka browser dan jalankan url:
 ```bash
 http://127.0.0.1:5000
 ```
 
-## My website look like this 
+## Tampilan Web Ketika Berhasil di jalankan
 ![ui](ui.png)
 
 
-**Wow now u can using my app!!! That cool right?**
+**Sekarang kamu bisa menjalankan project ini, keren bukan?**
 
-**If you like that, please Star my repo 🌟**
+**Jangan lupa 🌟🌟 repositori ini, jika kamu suka dengan project yang saya bagikan**
 
-**And if you want to support let follows my github 🎆**
+**Support dengan cara follow github saya 🎆**
 
 
 

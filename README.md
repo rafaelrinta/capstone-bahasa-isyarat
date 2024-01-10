@@ -45,8 +45,3 @@ http://127.0.0.1:5000
 **Jangan lupa 🌟🌟 repositori ini, jika kamu suka dengan project yang saya bagikan**
 
 **Support dengan cara follow github saya 🎆**
-
-
-
---------------------------------------------------------------
-***Authorized by Sho0***

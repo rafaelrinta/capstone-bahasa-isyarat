@@ -78,23 +78,32 @@
         <script>
 
             function submitForm() {
-                // Get form data
+                // Membentuk objek formData yang berisi data elemen elemen formulir.
                 var formData = {
                     'nama': document.getElementById('nama').value,
                     'tanggal': document.getElementById('tanggal').value,
                     'review': document.getElementById('review').value
                 };
 
-                // Send AJAX request to submit form
+                // Mengirim request AJAX
+                // Membuat objek XMLHttpRequest untuk mengirim request ke server.
                 var xhr = new XMLHttpRequest();
+                // Mengatur metode request ke 'POST', URL tujuan ke '/submit', dan menentukan bahwa request akan bersifat asynchronous (true)
                 xhr.open('POST', '/submit', true);
+                // menandakan bahwa data yang dikirimkan dalam format JSON.
                 xhr.setRequestHeader('Content-Type', 'application/json');
+
+                // Menetapkan fungsi yang akan dijalankan setiap kali status permintaan berubah
                 xhr.onreadystatechange = function () {
+                    // Ketika status permintaan mencapai 4 (DONE) dan status HTTP adalah 200 (OK), artinya permintaan berhasil,
+                    // maka tampilkan pesan "Form submitted successfully!"
                     if (xhr.readyState === 4 && xhr.status === 200) {
                         // Form submitted successfully
                         alert("Form submitted successfully!");
                     }
                 };
+                // Mengirim data formulir dalam bentuk JSON ke server menggunakan metode send dari objek XMLHttpRequest.
+                // Data formulir diubah menjadi string JSON dengan JSON.stringify(formData).
                 xhr.send(JSON.stringify(formData));
             }
         </script>

@@ -4,8 +4,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 #Implementasi Model
-import nltk
-import re
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
 import pickle
 from sklearn.utils.multiclass import unique_labels
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -14,8 +14,9 @@ from nltk.tokenize import TweetTokenizer
 #DBMS
 import pymysql
 
+# memeriksa apakah tabel dalam database MySQL tertentu kosong atau tidak
 def is_table_empty(table, host='localhost', user='root', password='', database='review'):
-    # Establish a connection to the MySQL database
+    # Membuat koneksi ke database MySQL menggunakan modul PyMySQL
     connection = pymysql.connect(
         host=host,
         user=user,
@@ -23,15 +24,15 @@ def is_table_empty(table, host='localhost', user='root', password='', database='
         database=database
     )
     
-    # Create a cursor object to execute SQL queries
+    # Membuat objek kursor yang digunakan untuk mengeksekusi pernyataan SQL
     cursor = connection.cursor()
     
-    # Check if the table is empty
+    # Memeriksa apakah tabel kosong atau tidak
     query_check_empty = f"SELECT COUNT(*) FROM {table}"
     cursor.execute(query_check_empty)
     count_result = cursor.fetchone()[0]
 
-    # Close the cursor and the database connection
+    # Menutup objek kursor dan koneksi database
     cursor.close()
     connection.close()
 
@@ -39,7 +40,7 @@ def is_table_empty(table, host='localhost', user='root', password='', database='
 
 #Implemnetasi Model dengan Data Baru
 def read_mysql_table(table, host='localhost', user='root', password='', database='review'):
-    # Establish a connection to the MySQL database
+    # Membuat koneksi ke database MySQL menggunakan modul PyMySQL
     connection = pymysql.connect(
         host=host,
         user=user,
@@ -47,20 +48,20 @@ def read_mysql_table(table, host='localhost', user='root', password='', database
         database=database
     )
     
-    # Create a cursor object to execute SQL queries
+    # Membuat objek kursor yang digunakan untuk mengeksekusi pernyataan SQL
     cursor = connection.cursor()
     
     query = f"SELECT * FROM {table}"
     cursor.execute(query)
     result = cursor.fetchall()
     
-    # Convert the result to a Pandas DataFrame
+    # Mengubah hasil ke dataframe pandas
     df = pd.DataFrame(result)
     
-    # Assign column names based on the cursor description
+    # menetapkan nama-nama kolom pada Pandas DataFrame berdasarkan deskripsi hasil query SQL
     df.columns = [column[0] for column in cursor.description]
     
-    # Close the cursor and the database connection
+    # Menutup objek kursor dan koneksi database
     cursor.close()
     connection.close()
     
@@ -68,101 +69,84 @@ def read_mysql_table(table, host='localhost', user='root', password='', database
 
 table_name = 'input_review'
 
+#  jika tabel tidak kosong, maka kode di jalankan, begitu juga sebaliknya           
 if not is_table_empty(table_name):
     df = read_mysql_table(table_name)
-    # #menyimpan tweet. (tipe data series pandas)
-    data_content = df['review']
+    # text preprocessing
+    def preprocess_text(content):
+        import nltk
+        import re
+        nltk.download('stopwords')
+        nltk.download('punkt')
 
-    # casefolding
-    data_casefolding = data_content.str.lower()
-    data_casefolding.head()
+        # filtering
 
-    #filtering
+        text = re.sub(r'\W', ' ', str(content))
+        text = re.sub(r'\s+[a-zA-Z]\s+', ' ', content)
+        text = re.sub(r'\^[a-zA-Z]\s+', ' ', content)
+        text = re.sub(r'\s+', ' ', content, flags=re.I)
+        text = re.sub(r'^b\s+', '', content)
 
-    #url
-    filtering_url = [re.sub(r'''(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))''', " ", str(tweet)) for tweet in data_casefolding]
-    #cont
-    filtering_cont = [re.sub(r'\(cont\)'," ", tweet)for tweet in filtering_url]
-    #punctuatuion
-    filtering_punctuation = [re.sub('[!"”#$%&’()*+,-./:;<=>?@[\]^_`{|}~]', ' ', tweet) for tweet in filtering_cont]
-    #  hapus #tagger
-    filtering_tagger = [re.sub(r'#([^\s]+)', '', tweet) for tweet in filtering_punctuation]
-    #numeric
-    filtering_numeric = [re.sub(r'\d+', ' ', tweet) for tweet in filtering_tagger]
+        # case folding
+        text = text.lower()
 
-    # # filtering RT , @ dan #
-    # fungsi_clen_rt = lambda x: re.compile('\#').sub('', re.compile('rt @').sub('@', x, count=1).strip())
-    # clean = [fungsi_clen_rt for tweet in filtering_numeric]
+        # Tokenisasi
+        tokens = word_tokenize(text)
 
-    data_filtering = pd.Series(filtering_numeric)
+        # Menghapus stopwords
+        stop_words = set(stopwords.words('indonesian'))
+        tokens = [word for word in tokens if word.lower() not in stop_words]
 
-    # #tokenize
-    tknzr = TweetTokenizer()
-    data_tokenize = [tknzr.tokenize(tweet) for tweet in data_filtering]
-    data_tokenize
+        # Menggabungkan kembali tokens menjadi kalimat
+        preprocessed_text = ' '.join(tokens)
 
-    #slang word
-    path_dataslang = open("Data/kamus kata baku-clear.csv")
-    dataslang = pd.read_csv(path_dataslang, encoding = 'utf-8', header=None, sep=";")
+        return preprocessed_text
 
-    def replaceSlang(word):
-      if word in list(dataslang[0]):
-        indexslang = list(dataslang[0]).index(word)
-        return dataslang[1][indexslang]
-      else:
-        return word
+    # Melakukan preprocessing pada semua ulasan
+    df['preprocessed_text'] = df['review'].apply(preprocess_text)
+    ulasan = df['preprocessed_text']
+    ulasan
 
-    data_formal = []
-    for data in data_tokenize:
-      data_clean = [replaceSlang(word) for word in data]
-      data_formal.append(data_clean)
-    len_data_formal = len(data_formal)
-    # print(data_formal)
-    # len_data_formal
-
-    nltk.download('stopwords')
-    default_stop_words = nltk.corpus.stopwords.words('indonesian')
-    stopwords = set(default_stop_words)
-
-    def removeStopWords(line, stopwords):
-      words = []
-      for word in line:  
-        word=str(word)
-        word = word.strip()
-        if word not in stopwords and word != "" and word != "&":
-          words.append(word)
-
-      return words
-    reviews = [removeStopWords(line,stopwords) for line in data_formal]
-
-    # Specify the file path of the pickle file
+    # path file pickle
     file_path = 'Model/reviews_tfidf.pickle'
 
-    # Read the pickle file
+    # membaca file pickle
     with open(file_path, 'rb') as file:
         data_train = pickle.load(file)
         
     # pembuatan vector kata
+    # mengonversi kumpulan dokumen teks menjadi matriks representasi TF-IDF
     vectorizer = TfidfVectorizer()
+    # menghitung nilai TF-IDF untuk setiap kata dalam data latih
+    # dan menghasilkan matriks yang dapat digunakan untuk melatih model.
     train_vector = vectorizer.fit_transform(data_train)
-    reviews2 = [" ".join(r) for r in reviews]
+    # Menggabungkan setiap kalimat dalam 'ulasan' menjadi satu string menggunakan metode '" ".join(r)'
+    reviews2 = [" ".join(r) for r in ulasan]
 
+    # Menggunakan modul pickle untuk membaca model sentimen yang telah disimpan sebelumnya
     load_model = pickle.load(open('Model/sentimen_model.pkl','rb'))
 
+    # menyimpan hasil prediksi dari model untuk setiap input teks.
     result = []
 
+    # melakukan prediksi sentimen menggunakan model yang telah dimuat sebelumnya.
     for test in reviews2:
+        # elemen dalam reviews2 diambil dan dimasukkan ke dalam list test_data
         test_data = [str(test)]
+        # Menerapkan transformasi TF-IDF ke data uji (test_data).
         test_vector = vectorizer.transform(test_data).toarray()
+        # Melakukan prediksi sentimen untuk data uji yang telah diubah menjadi vektor menggunakan model yang telah dimuat.
         pred = load_model.predict(test_vector)
+        # Hasil prediksi (pred[0]) ditambahkan ke dalam list result
         result.append(pred[0])
-        
+    # mengelola label-label unik.
     unique_labels(result)
 
+    # Menambahkan kolom baru dengan nama 'label' ke dalam DataFrame df.
     df['label'] = result
 
     def delete_all_data_from_table(table, host='localhost', user='root', password='', database='review'):
-        # Establish a connection to the MySQL database
+        # Membuat koneksi ke database MySQL menggunakan modul PyMySQL
         connection = pymysql.connect(
             host=host,
             user=user,
@@ -170,24 +154,25 @@ if not is_table_empty(table_name):
             database=database
         )
         
-        # Create a cursor object to execute SQL queries
+        # Membuat objek kursor yang digunakan untuk mengeksekusi pernyataan SQL
         cursor = connection.cursor()
         
-        # Delete all data from the specified table
+        # menghapus semua baris dari sebuah tabel dalam database
         query = f"DELETE FROM {table}"
+        # Mengeksekusi pernyataan SQL DELETE yang telah dibuat sebelumnya
         cursor.execute(query)
         
-        # Commit the changes
+        # melakukan commit perubahan pada database setelah sebuah operasi database telah berhasil dieksekusi 
         connection.commit()
         
-        # Close the cursor and the database connection
+        # Menutup objek kursor dan koneksi database
         cursor.close()
         connection.close()
-
+    # penghapusan semua data dari tabel dengan nama 'input_review'
     delete_all_data_from_table('input_review')
 
     def insert_df_into_hasil_model(df, host='localhost', user='root', password='', database='review'):
-        # Establish a connection to the MySQL database
+        # Membuat koneksi ke database MySQL menggunakan modul PyMySQL
         connection = pymysql.connect(
             host=host,
             user=user,
@@ -195,26 +180,30 @@ if not is_table_empty(table_name):
             database=database
         )
 
-        # Create a cursor object to execute SQL queries
+        # Membuat objek kursor yang digunakan untuk mengeksekusi pernyataan SQL
         cursor = connection.cursor()
 
-        # Insert each row from the DataFrame into the 'hasil_model' table
+        # Masukkan setiap baris dari DataFrame ke dalam tabel 'hasil_model'
         for index, row in df.iterrows():
             query = "INSERT INTO hasil_model (id_review, nama, tanggal, review, label) VALUES (%s, %s, %s, %s, %s)"
             cursor.execute(query, (row['id_review'], row['nama'], row['tanggal'], row['review'], row['label']))
 
-        # Commit the changes
+        # melakukan commit perubahan pada database setelah sebuah operasi database telah berhasil dieksekusi 
         connection.commit()
 
-        # Close the cursor and the database connection
+        # Menutup objek kursor dan koneksi database
         cursor.close()
         connection.close()
 
+    # penyisipan data dari suatu Pandas DataFrame (df) ke dalam tabel database dengan nama 'hasil_model'.
     insert_df_into_hasil_model(df)
 
     table_name = 'hasil_model'
+    # Membaca data dari tabel 'hasil_model' dalam database MySQL
     hasil_df = read_mysql_table(table_name)
+    # Menyimpan data dari DataFrame hasil_df ke dalam file CSV
     hasil_df.to_csv('hasil_model2.csv')
+    # Membaca data dari file CSV 'hasil_model2.csv' menjadi DataFrame 'data'
     data = pd.read_csv('hasil_model2.csv')
 else:
     # Membaca data dari file CSV
@@ -250,4 +239,5 @@ jumlah_data = [jumlah_positif, jumlah_negatif, jumlah_netral]
 colors = ['green', 'red', 'gray']
 ax.bar(labels, jumlah_data, color=colors)
 
+# menampilkan suatu gambar (plot) dalam halaman web aplikasi.
 st.pyplot(fig)

@@ -289,7 +289,7 @@ def getResponse(ints, intents_json):
     #mengembalikan respons yang telah dipilih secara acak
     return result
 
-# Function to insert data into MySQL
+# Fungsi menambahkan data ke mysql
 def insert_data_to_mysql(data):
     connection = pymysql.connect(**db_config)
     try:
@@ -305,7 +305,7 @@ def insert_data_to_mysql(data):
             """
             cursor.execute(sql)
 
-            # Insert data into the table
+            # Insert data ke tabel
             sql_insert = "INSERT INTO input_review (nama, tanggal, review) VALUES (%s, %s, %s)"
             cursor.execute(sql_insert, (data['nama'], data['tanggal'], data['review']))
         connection.commit()
@@ -315,7 +315,7 @@ def insert_data_to_mysql(data):
     finally:
         connection.close()
 
-# Enable CORS for all routes
+# memberikan izin kepada permintaan lintas domain untuk berkomunikasi dengan sumber daya
 def add_cors_headers(response):
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
@@ -324,12 +324,12 @@ def add_cors_headers(response):
 
 app.after_request(add_cors_headers)
 
-# Route to render the form
+# Rute ulasan
 @app.route('/ulasan')
 def ulasan():
     return render_template('ulasan.html')
 
-# Route to handle form submission
+# Rute submit form ulasan
 @app.route('/submit', methods=['POST', 'OPTIONS'])
 def submit_form():
     if request.method == 'OPTIONS':

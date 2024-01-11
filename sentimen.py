@@ -4,8 +4,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 #Implementasi Model
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
+import nltk
+import re
 import pickle
 from sklearn.utils.multiclass import unique_labels
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -72,40 +72,92 @@ table_name = 'input_review'
 #  jika tabel tidak kosong, maka kode di jalankan, begitu juga sebaliknya           
 if not is_table_empty(table_name):
     df = read_mysql_table(table_name)
-    # text preprocessing
-    def preprocess_text(content):
-        import nltk
-        import re
-        nltk.download('stopwords')
-        nltk.download('punkt')
+    # #menyimpan dataframe review (tipe data series pandas)
+    data_content = df['review']
 
-        # filtering
+    # casefolding
+    data_casefolding = data_content.str.lower()
+    data_casefolding.head()
 
-        text = re.sub(r'\W', ' ', str(content))
-        text = re.sub(r'\s+[a-zA-Z]\s+', ' ', content)
-        text = re.sub(r'\^[a-zA-Z]\s+', ' ', content)
-        text = re.sub(r'\s+', ' ', content, flags=re.I)
-        text = re.sub(r'^b\s+', '', content)
+    #filtering
 
-        # case folding
-        text = text.lower()
+    #url
+    filtering_url = [re.sub(r'''(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))''', " ", str(tweet)) for tweet in data_casefolding]
+    #cont
+    filtering_cont = [re.sub(r'\(cont\)'," ", tweet)for tweet in filtering_url]
+    #punctuatuion
+    filtering_punctuation = [re.sub('[!"”#$%&’()*+,-./:;<=>?@[\]^_`{|}~]', ' ', tweet) for tweet in filtering_cont]
+    #  hapus #tagger
+    filtering_tagger = [re.sub(r'#([^\s]+)', '', tweet) for tweet in filtering_punctuation]
+    #numeric
+    filtering_numeric = [re.sub(r'\d+', ' ', tweet) for tweet in filtering_tagger]
 
-        # Tokenisasi
-        tokens = word_tokenize(text)
+    # # filtering RT , @ dan #
+    # fungsi_clen_rt = lambda x: re.compile('\#').sub('', re.compile('rt @').sub('@', x, count=1).strip())
+    # clean = [fungsi_clen_rt for tweet in filtering_numeric]
 
-        # Menghapus stopwords
-        stop_words = set(stopwords.words('indonesian'))
-        tokens = [word for word in tokens if word.lower() not in stop_words]
+    # Data teks yang telah difilter kemudian diubah menjadi Pandas Series 
+    data_filtering = pd.Series(filtering_numeric)
 
-        # Menggabungkan kembali tokens menjadi kalimat
-        preprocessed_text = ' '.join(tokens)
+    # tokenize
+    # tweet dalam data_filtering di-tokenisasi menjadi list kata-kata menggunakan tknzr.tokenize(tweet),
+    # kemudian disimpan dalam variabel data_tokenize
+    tknzr = TweetTokenizer()
+    data_tokenize = [tknzr.tokenize(tweet) for tweet in data_filtering]
+    data_tokenize
 
-        return preprocessed_text
+    #slang word
+    path_dataslang = open("Data/kamus kata baku-clear.csv")
+    # Menggunakan Pandas untuk membaca file CSV tersebut dan menyimpannya dalam DataFrame dataslang
+    dataslang = pd.read_csv(path_dataslang, encoding = 'utf-8', header=None, sep=";")
 
-    # Melakukan preprocessing pada semua ulasan
-    df['preprocessed_text'] = df['review'].apply(preprocess_text)
-    ulasan = df['preprocessed_text']
-    ulasan
+    # menggantikan kata slang (slang word) dengan kata baku berdasarkan
+    # kamus kata baku yang disimpan dalam DataFrame dataslang
+    def replaceSlang(word):
+      if word in list(dataslang[0]):
+        # jika word terdapat dalam kamus, mendapatkan index (indexslang) dari word dalam kolom pertama
+        indexslang = list(dataslang[0]).index(word)
+        # Menggantikan word dengan kata baku yang sesuai dari kolom kedua (dataslang[1]) DataFrame dataslang
+        return dataslang[1][indexslang]
+      else:
+        return word
+
+    #  menyimpan hasil tokenisasi yang telah dibersihkan dari kata slang.
+    data_formal = []
+    # iterasi melalui setiap tweet yang telah di-tokenisasi dan disimpan dalam data_tokenize
+    for data in data_tokenize:
+      # Menggantikan kata slang dalam setiap kata dalam tweet menggunakan fungsi replaceSlang
+      data_clean = [replaceSlang(word) for word in data]
+      # Menambahkan tweet yang telah dibersihkan dari kata slang ke dalam list data_formal
+      data_formal.append(data_clean)
+    # Menghitung jumlah tweet yang telah dibersihkan dari kata slang dan disimpan dalam list data_formal
+    len_data_formal = len(data_formal)
+
+    nltk.download('stopwords')
+    # Mengambil daftar kata-kata stop words dalam bahasa Indonesia dari NLTK 
+    default_stop_words = nltk.corpus.stopwords.words('indonesian')
+    # Menggunakan set untuk memungkinkan pencarian lebih cepat daripada menggunakan daftar biasa
+    stopwords = set(default_stop_words)
+
+    #  menerima dua parameter: line (teks yang akan dihapus stop words-nya) dan
+    # stopwords (kumpulan kata-kata stop words).
+    def removeStopWords(line, stopwords):
+      words = []
+      # Melakukan iterasi melalui setiap kata dalam teks yang disimpan dalam list line
+      for word in line:  
+        # Mengonversi setiap kata ke dalam bentuk string dan menghapus spasi di awal dan akhir kata
+        word=str(word)
+        word = word.strip()
+        # Memeriksa apakah kata tersebut tidak termasuk dalam kata-kata stop words (word not in stopwords),
+        # tidak kosong (word != ""),
+        # dan tidak sama dengan "&" (word != "&").
+        if word not in stopwords and word != "" and word != "&":
+          # Jika memenuhi ketiga kondisi tersebut, maka dimasukkan ke dalam list words.
+          words.append(word)
+
+      return words
+    #  menerapkan fungsi removeStopWords pada setiap teks dalam list data_formal
+    reviews = [removeStopWords(line,stopwords) for line in data_formal]
 
     # path file pickle
     file_path = 'Model/reviews_tfidf.pickle'
@@ -121,7 +173,7 @@ if not is_table_empty(table_name):
     # dan menghasilkan matriks yang dapat digunakan untuk melatih model.
     train_vector = vectorizer.fit_transform(data_train)
     # Menggabungkan setiap kalimat dalam 'ulasan' menjadi satu string menggunakan metode '" ".join(r)'
-    reviews2 = [" ".join(r) for r in ulasan]
+    reviews2 = [" ".join(r) for r in reviews]
 
     # Menggunakan modul pickle untuk membaca model sentimen yang telah disimpan sebelumnya
     load_model = pickle.load(open('Model/sentimen_model.pkl','rb'))
@@ -234,10 +286,11 @@ with col3:
 
 # Membuat bar chart dengan warna yang berbeda
 fig, ax = plt.subplots()
+# Menentukan Label, Jumlah Data, dan Warna untuk Setiap Batang
 labels = ['Positif (5)', 'Negatif (1)', 'Netral (3)']
 jumlah_data = [jumlah_positif, jumlah_negatif, jumlah_netral]
 colors = ['green', 'red', 'gray']
 ax.bar(labels, jumlah_data, color=colors)
 
-# menampilkan suatu gambar (plot) dalam halaman web aplikasi.
+# menampilkan suatu gambar (menggunakan matplotlib) dalam halaman web aplikasi.
 st.pyplot(fig)

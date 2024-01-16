@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 09 Jan 2024 pada 11.22
+-- Waktu pembuatan: 15 Jan 2024 pada 10.43
 -- Versi server: 10.4.27-MariaDB
 -- Versi PHP: 8.1.12
 
@@ -74,7 +74,18 @@ INSERT INTO `hasil_model` (`id_hasil_model`, `id_review`, `nama`, `tanggal`, `re
 (120, 150, 'Zidan', '2023-12-20', 'good', 5),
 (121, 151, 'Maul', '2023-12-20', 'good', 5),
 (122, 152, 'Ana', '2023-12-20', 'good', 5),
-(123, 153, 'Ghani', '2023-12-21', 'jelek banget', 1);
+(123, 153, 'Ghani', '2023-12-21', 'jelek banget', 1),
+(124, 154, 'Hendra', '2023-12-23', 'Bagus', 3),
+(125, 155, 'Sarah', '2023-12-26', 'Bagus bangett mantappp', 3),
+(126, 156, 'Yosan', '2023-12-07', 'jelek banget', 3),
+(127, 157, 'Rio', '2023-12-12', 'sampah, aplikasi jelek banget', 3),
+(128, 158, 'Nami', '2023-12-24', 'good', 3),
+(129, 159, 'Feni', '2023-12-20', 'Bagus bangett mantappp', 3),
+(130, 160, 'Jos', '2023-12-29', 'good', 5),
+(131, 161, 'Bayu', '2023-12-20', 'good!!', 5),
+(132, 162, 'Kape', '2023-12-20', 'Bagus bangett mantappp', 5),
+(133, 163, 'Dego', '2023-12-20', 'Bagus bangett mantappp', 5),
+(134, 164, 'Chori', '2023-12-22', 'Bagus bangett mantappp', 5);
 
 -- --------------------------------------------------------
 
@@ -113,13 +124,13 @@ ALTER TABLE `input_review`
 -- AUTO_INCREMENT untuk tabel `hasil_model`
 --
 ALTER TABLE `hasil_model`
-  MODIFY `id_hasil_model` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=124;
+  MODIFY `id_hasil_model` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=135;
 
 --
 -- AUTO_INCREMENT untuk tabel `input_review`
 --
 ALTER TABLE `input_review`
-  MODIFY `id_review` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=154;
+  MODIFY `id_review` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=165;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
